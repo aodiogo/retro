@@ -6,59 +6,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class CommentRepoTest {
+public class UserRepoTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private CommentRepository commentRepository;
+    private UserRepository userRepository;
 
     @Test
-    public void
-    findByCreatedYearAndMonthAndDay_HappyPath_ShouldReturn1Comment() {
+    public void findByUsername_HappyPath_ShouldReturn1User() throws
+            Exception {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
-        testEntityManager.persist(comment);
+        User user = new User();
+        user.setUsername("shazin");
+        user.setPassword("shaz980");
+        user.setRole("USER");
+        testEntityManager.persist(user);
         testEntityManager.flush();
 
         // When
-        LocalDate now = LocalDate.now();
-        List<Comment> comments =
-                commentRepository.findByCreatedYearAndMonthAndDay(now.getYear(),
-                        now.getMonth().getValue(), now.getDayOfMonth());
+        User actual = userRepository.findByUsername("shazin");
 
         // Then
-        assertThat(comments).hasSize(1);
-        assertThat(comments.get(0)).hasFieldOrPropertyWithValue("comment",
-                "Test");
+        assertThat(actual).isEqualTo(user);
     }
 
     @Test
-    public void save_HappyPath_ShouldSave1Comment() {
+    public void save_HappyPath_ShouldSave1User() throws Exception {
         // Given
-        Comment comment = new Comment();
-        comment.setComment("Test");
-        comment.setType(CommentType.PLUS);
-        comment.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+        User user = new User();
+        user.setUsername("shazin");
+        user.setPassword("shaz980");
+        user.setRole("USER");
 
         // When
-        Comment saved = commentRepository.save(comment);
+        User actual = userRepository.save(user);
 
         // Then
-        assertThat(testEntityManager.find(Comment.class,
-                saved.getId())).isEqualTo(saved);
+        assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isNotNull();
     }
 }

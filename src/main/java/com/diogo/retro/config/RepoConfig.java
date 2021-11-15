@@ -1,4 +1,4 @@
-package com.diogo.retro.model;
+package com.diogo.retro.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

@@ -2,7 +2,9 @@ package com.diogo.retro.service;
 
 import com.diogo.retro.model.Comment;
 import com.diogo.retro.model.CommentRepository;
+import com.diogo.retro.model.CommentType;
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,7 +26,7 @@ public class CommentServiceTest {
 
     private CommentService commentService;
 
-    @Before
+    @BeforeEach
     public void init() {
         commentService = new CommentService(commentRepository);
     }
